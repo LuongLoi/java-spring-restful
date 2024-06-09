@@ -1,5 +1,7 @@
 package vn.hoidanit.jobhunter.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,5 +31,15 @@ public class UserController {
     public String deleteUser(@PathVariable("id") long id) {
         this.userService.handleDeleteUser(id);
         return "User eric";
+    }
+
+    @GetMapping("/user/{id}")
+    public User getUserById(@PathVariable("id") long id) {
+        return this.userService.handleGetUserById(id);
+    }
+
+    @GetMapping("/users")
+    public List<User> getAllUsers() {
+        return this.userService.handleGetAllUsers();
     }
 }
