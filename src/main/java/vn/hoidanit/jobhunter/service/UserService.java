@@ -34,7 +34,7 @@ public class UserService {
     }
 
     public User handleUpdateUser(User updateUser) {
-         User user = this.handleGetUserById(updateUser.getId());
+        User user = this.handleGetUserById(updateUser.getId());
         if (user != null) {
             user.setEmail(updateUser.getEmail());
             user.setName(updateUser.getName());
@@ -43,4 +43,7 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
+    public User handleGetUserByUsername(String username) {
+        return this.userRepository.findByEmail(username);
+    } 
 }
