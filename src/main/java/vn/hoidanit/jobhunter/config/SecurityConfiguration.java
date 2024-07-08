@@ -23,7 +23,8 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(
 						authz -> authz
 									.requestMatchers("/").permitAll()
-                                    .anyRequest().authenticated()
+                // .anyRequest().authenticated()
+                                     .anyRequest().permitAll()
                                     
                 )
             .formLogin(f -> f.disable())
