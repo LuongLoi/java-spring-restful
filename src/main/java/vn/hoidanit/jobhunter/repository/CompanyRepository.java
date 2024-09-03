@@ -5,8 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import vn.hoidanit.jobhunter.domain.Company;
 
+
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long>{
-
+    Company findById(long id);
     
 }
