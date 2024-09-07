@@ -1,4 +1,5 @@
 package vn.hoidanit.jobhunter.controller;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
@@ -18,10 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.turkraft.springfilter.boot.Filter;
 
+import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
+import vn.hoidanit.jobhunter.domain.dto.UserCreateDTO;
+import vn.hoidanit.jobhunter.domain.dto.UserFetchDTO;
+import vn.hoidanit.jobhunter.domain.dto.UserUpdateDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.anotation.ApiMessage;
+import vn.hoidanit.jobhunter.util.error.EmailInvalidException;
 import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 
 @RestController
@@ -37,26 +43,36 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> handeCreateUser(@RequestBody User postManUser) {
+    @ApiMessage("Create new user")
+    public ResponseEntity<UserCreateDTO> handeCreateUser(@Valid @RequestBody User postManUser)
+            throws EmailInvalidException {
+        boolean isExistEmail = this.userService.isExistEmail(postManUser.getEmail());
+        if (isExistEmail)
+            throw new EmailInvalidException(
+                    "Email " + postManUser.getEmail() + " đã tồn tại, vui lòng sử dụng email khác!");
         String hashPassword = this.passwordEncoder.encode(postManUser.getPassword());
         postManUser.setPassword(hashPassword);
         User user = this.userService.handleCreateUser(postManUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.convertToResUserCreateDTO(user));
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") long id) throws IdInvalidException {
-
-        if (id >= 1500) {
-            throw new IdInvalidException("Id khong lon hon 1501");
-        }
+    @ApiMessage("Delete a user")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) throws IdInvalidException {
+        User user = this.userService.handleGetUserById(id);
+        if (user == null)
+            throw new IdInvalidException("ID không tồn tại!");
         this.userService.handleDeleteUser(id);
-        return ResponseEntity.ok("User eric");
+        return ResponseEntity.ok(null);
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
-        return ResponseEntity.ok(this.userService.handleGetUserById(id));
+    @ApiMessage("Fetch user by id")
+    public ResponseEntity<UserFetchDTO> getUserById(@PathVariable("id") long id) throws IdInvalidException {
+        User user = this.userService.handleGetUserById(id);
+        if (user == null)
+            throw new IdInvalidException("ID không tồn tại!");
+        return ResponseEntity.ok(this.userService.convertToResUserFetchDTO(user));
     }
 
     // fetch all users
@@ -65,12 +81,16 @@ public class UserController {
     public ResponseEntity<ResultPaginationDTO> getAllUsers(
         @Filter Specification<User> spec, Pageable pageable
     ) {
-        return ResponseEntity.ok(this.userService.handleGetAllUsers(spec,pageable));
+        return ResponseEntity.ok( this.userService.handleGetAllUsers(spec, pageable));
     }
 
     @PutMapping("/users")
-    public ResponseEntity<User> handeUpdateUser(@RequestBody User updateUser) {
-        User user = this.userService.handleUpdateUser(updateUser);
-        return ResponseEntity.ok(user); 
+    public ResponseEntity<UserUpdateDTO> handeUpdateUser(@RequestBody User updateUser) throws IdInvalidException{
+        
+        User user = this.userService.handleGetUserById(updateUser.getId());
+        if (user == null)
+            throw new IdInvalidException("ID = " + updateUser.getId()+ " không tồn tại!");
+        user = this.userService.handleUpdateUser(updateUser);
+        return ResponseEntity.ok(this.userService.convertToResUserUpdateDTO(user)); 
     }
 }
