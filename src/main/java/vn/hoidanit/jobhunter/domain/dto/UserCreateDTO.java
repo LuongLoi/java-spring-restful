@@ -2,7 +2,6 @@ package vn.hoidanit.jobhunter.domain.dto;
 
 import java.time.Instant;
 
-import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.Setter;
 import vn.hoidanit.jobhunter.util.constant.GenderEnum;
