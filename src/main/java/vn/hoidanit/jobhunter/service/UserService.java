@@ -1,8 +1,6 @@
 package vn.hoidanit.jobhunter.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -17,8 +15,7 @@ import vn.hoidanit.jobhunter.domain.dto.UserCreateDTO;
 import vn.hoidanit.jobhunter.domain.dto.UserFetchDTO;
 import vn.hoidanit.jobhunter.domain.dto.UserUpdateDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
-import vn.hoidanit.jobhunter.util.error.EmailInvalidException;
-import vn.hoidanit.jobhunter.util.error.IdInvalidException;
+
 
 @Service
 public class UserService {
@@ -123,5 +120,13 @@ public class UserService {
         userUpdateDTO.setGender(user.getGender());
         userUpdateDTO.setUpdatedAt(user.getUpdatedAt());
         return userUpdateDTO;
+    }
+
+    public void updateUserToken(String token, String email) {
+        User user = this.handleGetUserByUsername(email);
+        if (user != null) {
+            user.setRefreshToken(token);
+            this.userRepository.save(user);
+        }
     }
 }
