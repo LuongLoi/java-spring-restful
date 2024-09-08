@@ -25,7 +25,6 @@ import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -136,5 +135,24 @@ public class AuthController {
                 .body(res);
     }
     
-    
+    @PostMapping("/auth/logout")
+    @ApiMessage("Logout user")
+    public ResponseEntity<Void> handleLogout() throws IdInvalidException {
+
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+        User user = this.userService.handleGetUserByUsername(email);
+        if (user == null)
+            throw new IdInvalidException("Người dùng không tồn tại!");
+
+        ResponseCookie deleteCookieSpring = ResponseCookie
+                .from("refresh_token", null)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .build();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, deleteCookieSpring.toString())
+                .body(null);
+    }
 }
