@@ -18,6 +18,7 @@ import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.LoginDTO;
 import vn.hoidanit.jobhunter.domain.dto.ResLoginDTO;
+import vn.hoidanit.jobhunter.domain.dto.ResLoginDTO.UserGetAccount;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.anotation.ApiMessage;
@@ -85,16 +86,18 @@ public class AuthController {
     
     @GetMapping("/auth/account")
     @ApiMessage("fetch account")
-    public ResponseEntity<ResLoginDTO.UserLogin> getAccount() {
+    public ResponseEntity<ResLoginDTO.UserGetAccount> getAccount() {
         String email = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
         User user = this.userService.handleGetUserByUsername(email);
         ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin();
+        ResLoginDTO.UserGetAccount userGetAccount = new ResLoginDTO.UserGetAccount();
         if (user != null) {
             userLogin.setId(user.getId());
             userLogin.setName(user.getName());
             userLogin.setEmail(user.getEmail());
+            userGetAccount.setUser(userLogin);
         }
-        return ResponseEntity.ok(userLogin);
+        return ResponseEntity.ok(userGetAccount);
     }
 
     @GetMapping("/auth/refresh")
