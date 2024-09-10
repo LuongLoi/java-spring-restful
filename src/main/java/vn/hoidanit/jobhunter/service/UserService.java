@@ -9,10 +9,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserCreateDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserFetchDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserUpdateDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.ResultPaginationDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.UserCreateDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.UserFetchDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.UserUpdateDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 
 

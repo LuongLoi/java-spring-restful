@@ -18,10 +18,10 @@ import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserCreateDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserFetchDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserUpdateDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.ResultPaginationDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.UserCreateDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.UserFetchDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.UserUpdateDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.anotation.ApiMessage;
 import vn.hoidanit.jobhunter.util.error.EmailInvalidException;

@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.ReqLoginDTO;
-import vn.hoidanit.jobhunter.domain.dto.ResLoginDTO;
-import vn.hoidanit.jobhunter.domain.dto.ResLoginDTO.UserGetAccount;
+import vn.hoidanit.jobhunter.domain.dto.request.ReqLoginDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.ResLoginDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.ResLoginDTO.UserGetAccount;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.anotation.ApiMessage;

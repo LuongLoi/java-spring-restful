@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.UserCreateDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.UserCreateDTO;
 
 
 @Repository
