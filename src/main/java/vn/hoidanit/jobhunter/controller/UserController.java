@@ -19,9 +19,9 @@ import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.response.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.response.UserCreateDTO;
-import vn.hoidanit.jobhunter.domain.dto.response.UserFetchDTO;
-import vn.hoidanit.jobhunter.domain.dto.response.UserUpdateDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.ResUserCreateDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.ResUserFetchDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.ResUserUpdateDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.anotation.ApiMessage;
 import vn.hoidanit.jobhunter.util.error.EmailInvalidException;
@@ -41,7 +41,7 @@ public class UserController {
 
     @PostMapping("/users")
     @ApiMessage("Create new user")
-    public ResponseEntity<UserCreateDTO> handeCreateUser(@Valid @RequestBody User postManUser)
+    public ResponseEntity<ResUserCreateDTO> handeCreateUser(@Valid @RequestBody User postManUser)
             throws EmailInvalidException {
         boolean isExistEmail = this.userService.isExistEmail(postManUser.getEmail());
         if (isExistEmail)
@@ -65,7 +65,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     @ApiMessage("Fetch user by id")
-    public ResponseEntity<UserFetchDTO> getUserById(@PathVariable("id") long id) throws IdInvalidException {
+    public ResponseEntity<ResUserFetchDTO> getUserById(@PathVariable("id") long id) throws IdInvalidException {
         User user = this.userService.handleGetUserById(id);
         if (user == null)
             throw new IdInvalidException("ID không tồn tại!");
@@ -82,7 +82,7 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity<UserUpdateDTO> handeUpdateUser(@RequestBody User updateUser) throws IdInvalidException{
+    public ResponseEntity<ResUserUpdateDTO> handeUpdateUser(@RequestBody User updateUser) throws IdInvalidException{
         
         User user = this.userService.handleGetUserById(updateUser.getId());
         if (user == null)

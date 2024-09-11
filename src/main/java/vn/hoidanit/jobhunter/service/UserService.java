@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.response.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.response.UserCreateDTO;
-import vn.hoidanit.jobhunter.domain.dto.response.UserFetchDTO;
-import vn.hoidanit.jobhunter.domain.dto.response.UserUpdateDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.ResUserCreateDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.ResUserFetchDTO;
+import vn.hoidanit.jobhunter.domain.dto.response.ResUserUpdateDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 
 
@@ -50,8 +50,8 @@ public class UserService {
         mt.setTotal(pageUser.getTotalElements());
 
         rs.setMeta(mt);
-        List<UserFetchDTO> listUser = pageUser.getContent()
-        .stream().map(item -> new UserFetchDTO(
+        List<ResUserFetchDTO> listUser = pageUser.getContent()
+        .stream().map(item -> new ResUserFetchDTO(
             item.getId(),
             item.getName(),
             item.getEmail(),
@@ -85,8 +85,8 @@ public class UserService {
         return this.userRepository.existsByEmail(email);
     }
 
-    public UserCreateDTO convertToResUserCreateDTO(User user) {
-        UserCreateDTO userCreateDTO = new UserCreateDTO();
+    public ResUserCreateDTO convertToResUserCreateDTO(User user) {
+        ResUserCreateDTO userCreateDTO = new ResUserCreateDTO();
         userCreateDTO.setId(user.getId());
         userCreateDTO.setName(user.getName());
         userCreateDTO.setEmail(user.getEmail());
@@ -94,11 +94,12 @@ public class UserService {
         userCreateDTO.setAddress(user.getAddress());
         userCreateDTO.setAge(user.getAge());
         userCreateDTO.setCreatedAt(user.getCreatedAt());
+        
         return userCreateDTO;
     }
 
-    public UserFetchDTO convertToResUserFetchDTO(User user) {
-        UserFetchDTO userFetchDTO = new UserFetchDTO();
+    public ResUserFetchDTO convertToResUserFetchDTO(User user) {
+        ResUserFetchDTO userFetchDTO = new ResUserFetchDTO();
         userFetchDTO.setId(user.getId());
         userFetchDTO.setName(user.getName());
         userFetchDTO.setEmail(user.getEmail());
@@ -110,8 +111,8 @@ public class UserService {
         return userFetchDTO;
     }
 
-    public UserUpdateDTO convertToResUserUpdateDTO(User user) {
-        UserUpdateDTO userUpdateDTO = new UserUpdateDTO();
+    public ResUserUpdateDTO convertToResUserUpdateDTO(User user) {
+        ResUserUpdateDTO userUpdateDTO = new ResUserUpdateDTO();
         userUpdateDTO.setId(user.getId());
         userUpdateDTO.setAddress(user.getAddress());
         userUpdateDTO.setName(user.getName());
