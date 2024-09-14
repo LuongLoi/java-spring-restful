@@ -82,7 +82,7 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity<ResUserUpdateDTO> handeUpdateUser(@RequestBody User updateUser) throws IdInvalidException{
+    public ResponseEntity<ResUserUpdateDTO> handleUpdateUser(@RequestBody User updateUser) throws IdInvalidException{
         
         User user = this.userService.handleGetUserById(updateUser.getId());
         if (user == null)

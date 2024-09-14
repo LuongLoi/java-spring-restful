@@ -1,6 +1,7 @@
 package vn.hoidanit.jobhunter.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.domain.dto.response.ResUserCreateDTO;
@@ -20,12 +22,19 @@ import vn.hoidanit.jobhunter.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CompanyService companyService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, CompanyService companyService) {
         this.userRepository = userRepository;
+        this.companyService = companyService;
     }
 
     public User handleCreateUser(User user) {
+        //check company
+        if (user.getCompany() != null) {
+            Optional<Company> company = this.companyService.findById(user.getCompany().getId());
+            user.setCompany(company.isPresent() ? company.get() : null);
+        }
         return this.userRepository.save(user);
     }
 
@@ -59,7 +68,11 @@ public class UserService {
             item.getGender(),
             item.getAddress(),
             item.getCreatedAt(),
-            item.getUpdatedAt()))
+            item.getUpdatedAt(),
+            new ResUserFetchDTO.CompanyUser(
+                item.getCompany() != null ? item.getCompany().getId() : 0,
+                item.getCompany() != null ? item.getCompany().getName() : "")                
+            ))
         .collect(Collectors.toList());
         rs.setResult(listUser);
         return rs;
@@ -73,6 +86,10 @@ public class UserService {
             user.setName(updateUser.getName());
             user.setAge(updateUser.getAge());
             user.setGender(updateUser.getGender());
+            if (updateUser.getCompany() != null) {
+                Optional<Company> company = this.companyService.findById(updateUser.getCompany().getId());
+                user.setCompany(company.isPresent() ? company.get() : null);
+            }
         }
         return this.userRepository.save(user);
     }
@@ -94,6 +111,12 @@ public class UserService {
         userCreateDTO.setAddress(user.getAddress());
         userCreateDTO.setAge(user.getAge());
         userCreateDTO.setCreatedAt(user.getCreatedAt());
+        ResUserCreateDTO.CompanyUser companyUser = new ResUserCreateDTO.CompanyUser();
+        if (user.getCompany() != null) {
+            companyUser.setId(user.getCompany().getId());
+            companyUser.setName(user.getCompany().getName());
+        }
+        userCreateDTO.setCompany(companyUser);
         
         return userCreateDTO;
     }
@@ -108,6 +131,12 @@ public class UserService {
         userFetchDTO.setGender(user.getGender());
         userFetchDTO.setCreatedAt(user.getCreatedAt());
         userFetchDTO.setUpdateAt(user.getUpdatedAt());
+        ResUserFetchDTO.CompanyUser companyUser = new ResUserFetchDTO.CompanyUser();
+        if (user.getCompany() != null) {
+            companyUser.setId(user.getCompany().getId());
+            companyUser.setName(user.getCompany().getName());
+        }
+        userFetchDTO.setCompanyUser(companyUser);
         return userFetchDTO;
     }
 
@@ -119,6 +148,12 @@ public class UserService {
         userUpdateDTO.setAge(user.getAge());
         userUpdateDTO.setGender(user.getGender());
         userUpdateDTO.setUpdatedAt(user.getUpdatedAt());
+        ResUserUpdateDTO.CompanyUser companyUser = new ResUserUpdateDTO.CompanyUser();
+        if (user.getCompany() != null) {
+            companyUser.setId(user.getCompany().getId());
+            companyUser.setName(user.getCompany().getName());
+        }
+        userUpdateDTO.setCompanyUser(companyUser);
         return userUpdateDTO;
     }
 

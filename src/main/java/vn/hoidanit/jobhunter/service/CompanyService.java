@@ -1,21 +1,29 @@
 package vn.hoidanit.jobhunter.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.Company;
+import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.repository.CompanyRepository;
+import vn.hoidanit.jobhunter.repository.UserRepository;
 
 @Service
 public class CompanyService {
 
     private CompanyRepository companyRepository;
+
+    private UserRepository userRepository;
     
-    public CompanyService(CompanyRepository companyRepository) {
+    public CompanyService(CompanyRepository companyRepository, UserRepository userRepository) {
         this.companyRepository = companyRepository;
+        this.userRepository = userRepository;
     }
 
     public Company handleCreateCompany(Company company) {
@@ -38,8 +46,9 @@ public class CompanyService {
     }
 
     public Company handleUpdateCompany(Company company) {
-        Company c = this.companyRepository.findById(company.getId());
-        if (c != null) {
+        Optional<Company> com = this.companyRepository.findById(company.getId());
+        Company c = new Company();
+        if (com.isPresent()) {
             c.setAddress(company.getAddress());
             c.setDescription(company.getDescription());
             c.setLogo(company.getLogo());
@@ -49,7 +58,18 @@ public class CompanyService {
         return null;
     }
 
+    public Optional<Company> findById(long id) {
+        return this.companyRepository.findById(id);
+    }
+
     public void handleDeleteCompany(long id) {
+        Optional<Company> company = this.findById(id);
+        if (company != null) {
+            Company com = company.get();
+            //fetch all user belong to company
+            List<User> users = this.userRepository.findByCompany(com);
+            this.userRepository.deleteAll(users);
+        }
         this.companyRepository.deleteById(id);
     }
 
