@@ -49,7 +49,7 @@ public class JobController {
         Optional<Job> currentJob = this.jobService.fetchJobById(updateJob.getId());
         if (!currentJob.isPresent())
             throw new IdInvalidException("Job với id = " + updateJob.getId() + " không tồn tại!");
-        return ResponseEntity.ok(this.jobService.update(updateJob));
+        return ResponseEntity.ok(this.jobService.update(updateJob, currentJob.get()));
     }
     
     @DeleteMapping("/delete/{id}")

@@ -63,6 +63,10 @@ public class ResumeService {
         res.setCreatedBy(resume.getCreatedBy());
         res.setUpdatedBy(resume.getUpdatedBy());
 
+        if (resume.getJob() != null) {
+            res.setCompanyName(resume.getJob().getCompany().getName());
+        }
+
         ResResumeFetchDTO.UserResume userResume = new ResResumeFetchDTO.UserResume();
         userResume.setId(resume.getUser().getId());
         userResume.setName(resume.getUser().getName());
