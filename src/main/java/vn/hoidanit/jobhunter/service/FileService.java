@@ -30,7 +30,7 @@ public class FileService {
         if (!tmpDir.isDirectory()) {
             try {
                 Files.createDirectory(tmpDir.toPath());
-                System.out.println(">>> CREATE NEW DIRECTORY SUCCESSFUL, PATH = " + folder);
+                System.out.println(">>> CREATE NEW DIRECTORY SUCCESSFUL, PATH = " + tmpDir.toPath());
             } catch (IOException e) {
             e.printStackTrace();
         }

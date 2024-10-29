@@ -3,6 +3,8 @@ package vn.hoidanit.jobhunter.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.turkraft.springfilter.boot.Filter;
+
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.Job;
 import vn.hoidanit.jobhunter.domain.dto.response.ResultPaginationDTO;
@@ -72,7 +74,7 @@ public class JobController {
     
     @GetMapping("/jobs")
     public ResponseEntity<ResultPaginationDTO> getAllJob(
-        Specification<Job> spec, Pageable pageable) {
+        @Filter Specification<Job> spec, Pageable pageable) {
         return ResponseEntity.ok(this.jobService.getAllJob(spec, pageable));
     }
     

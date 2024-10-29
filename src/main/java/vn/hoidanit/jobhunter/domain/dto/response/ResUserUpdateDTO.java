@@ -17,7 +17,7 @@ public class ResUserUpdateDTO {
     private GenderEnum gender;
     private String address;
     private Instant updatedAt;
-    private CompanyUser companyUser;
+    private CompanyUser company;
 
 
     @Getter

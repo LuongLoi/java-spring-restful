@@ -20,8 +20,8 @@ public class ResUserFetchDTO {
     private GenderEnum gender;
     private String address;
     private Instant createdAt;
-    private Instant updateAt;
-    private CompanyUser companyUser;
+    private Instant updatedAt;
+    private CompanyUser company;
     
     @Getter
     @Setter

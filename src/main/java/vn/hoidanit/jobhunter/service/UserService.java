@@ -130,13 +130,13 @@ public class UserService {
         userFetchDTO.setAge(user.getAge());
         userFetchDTO.setGender(user.getGender());
         userFetchDTO.setCreatedAt(user.getCreatedAt());
-        userFetchDTO.setUpdateAt(user.getUpdatedAt());
+        userFetchDTO.setUpdatedAt(user.getUpdatedAt());
         ResUserFetchDTO.CompanyUser companyUser = new ResUserFetchDTO.CompanyUser();
         if (user.getCompany() != null) {
             companyUser.setId(user.getCompany().getId());
             companyUser.setName(user.getCompany().getName());
         }
-        userFetchDTO.setCompanyUser(companyUser);
+        userFetchDTO.setCompany(companyUser);
         return userFetchDTO;
     }
 
@@ -153,7 +153,7 @@ public class UserService {
             companyUser.setId(user.getCompany().getId());
             companyUser.setName(user.getCompany().getName());
         }
-        userUpdateDTO.setCompanyUser(companyUser);
+        userUpdateDTO.setCompany(companyUser);
         return userUpdateDTO;
     }
 

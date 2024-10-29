@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResUploadFileDTO {
-    private String filaName;
+    private String fileName;
     private Instant uploadedAt;
 
 }

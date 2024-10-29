@@ -42,7 +42,7 @@ public class FileController {
     @PostMapping("/files")
     @ApiMessage("Upload single file")
     public ResponseEntity<ResUploadFileDTO> upload(
-        @RequestParam("file") MultipartFile file,
+        @RequestParam(name = "file", required = false) MultipartFile file,
         @RequestParam("folder") String folder
     ) throws URISyntaxException, IOException, StorageException {
 
