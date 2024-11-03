@@ -88,10 +88,17 @@ public class ResumeController {
     @DeleteMapping("/resumes/{id}")
     public ResponseEntity<Void> deleteResumeById(@PathVariable("id") long id) throws IdInvalidException {
         Resume resume = this.resumeService.handleFetchResumeById(id);
-        if (resume == null) 
+        if (resume == null)
             throw new IdInvalidException("Resume với id = " + id + " không tồn tại!");
         this.resumeService.handleDeleteResumeById(id);
         return ResponseEntity.ok(null);
     }
     
+    @PostMapping("/resumes/by-user")
+    @ApiMessage("Get list resumes by user")
+    public ResponseEntity<ResultPaginationDTO> fetchResumeByUser(Pageable pageable) {
+
+        return ResponseEntity.ok().body(this.resumeService.fetchResumeByUser(pageable));
+    }
+
 }

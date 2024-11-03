@@ -54,9 +54,9 @@ public class RoleController {
         //TODO: process PUT request
         if (this.roleService.fetchRoleById(role.getId()) == null)
             throw new IdInvalidException("Role với id = " + role.getId() + " không tồn tại!");
-        if (this.roleRepository.existsByName(role.getName()) == true
-                && this.roleRepository.findByName(role.getName()).getId() != role.getId())
-            throw new IdInvalidException("Role " + role.getName() + " đã tồn tại!");
+        // if (this.roleRepository.existsByName(role.getName()) == true
+        //         && this.roleRepository.findByName(role.getName()).getId() != role.getId())
+        //     throw new IdInvalidException("Role " + role.getName() + " đã tồn tại!");
         return ResponseEntity.ok(this.roleService.handleUpdateRole(role));
     }
 

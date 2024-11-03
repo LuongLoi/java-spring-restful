@@ -18,7 +18,6 @@ import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.request.ReqLoginDTO;
 import vn.hoidanit.jobhunter.domain.dto.response.ResLoginDTO;
-import vn.hoidanit.jobhunter.domain.dto.response.ResLoginDTO.UserGetAccount;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.anotation.ApiMessage;
@@ -63,9 +62,9 @@ public class AuthController {
         
         User user = this.userService.handleGetUserByUsername(loginDTO.getUsername());
         if (user != null) {
-            res.setUser(new ResLoginDTO.UserLogin(user.getId(), user.getName(), user.getEmail()));
+            res.setUser(new ResLoginDTO.UserLogin(user.getId(), user.getName(), user.getEmail(), user.getRole()));
         }
-        String access_token = this.securityUtil.createAccessToken(authentication.getName(),res.getUser());
+        String access_token = this.securityUtil.createAccessToken(authentication.getName(),res);
         res.setAccessToken(access_token);
         String refresh_token = this.securityUtil.createRefreshToken(loginDTO.getUsername(), res);
 
@@ -95,6 +94,7 @@ public class AuthController {
             userLogin.setId(user.getId());
             userLogin.setName(user.getName());
             userLogin.setEmail(user.getEmail());
+            userLogin.setRole(user.getRole());
             userGetAccount.setUser(userLogin);
         }
         return ResponseEntity.ok(userGetAccount);
@@ -117,9 +117,9 @@ public class AuthController {
         
         User user = this.userService.handleGetUserByUsername(email);
         if (user != null) {
-            res.setUser(new ResLoginDTO.UserLogin(user.getId(), user.getName(), user.getEmail()));
+            res.setUser(new ResLoginDTO.UserLogin(user.getId(), user.getName(), user.getEmail(), user.getRole()));
         }
-        String access_token = this.securityUtil.createAccessToken(email,res.getUser());
+        String access_token = this.securityUtil.createAccessToken(email,res);
         res.setAccessToken(access_token);
         String new_refresh_token = this.securityUtil.createRefreshToken(email, res);
 
