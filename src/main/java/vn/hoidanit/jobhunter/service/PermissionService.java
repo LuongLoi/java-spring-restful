@@ -62,7 +62,7 @@ public class PermissionService {
     }
 
     public void handleDeletePermissions(long id) {
-         // delete permissions (inside permission_role table)
+        // delete permissions (inside permission_role table)
         Optional<Permission> permissionOptional = this.permissionRepository.findById(id);
         Permission currentPermission = permissionOptional.get();
         currentPermission.getRoles().forEach(role -> role.getPermissions().remove(currentPermission));
@@ -70,4 +70,14 @@ public class PermissionService {
         //delete permission
         this.permissionRepository.delete(currentPermission);
     }
+    
+    public boolean isSameName(Permission p) {
+        Permission permissionDB = this.handleFetchPermissionById(p.getId());
+        if (permissionDB != null) {
+            if (permissionDB.getName().equals(p.getName()))
+                return true;
+        }
+        return false;
+    }
+
 }

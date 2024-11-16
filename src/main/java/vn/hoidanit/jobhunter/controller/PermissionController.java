@@ -38,8 +38,9 @@ public class PermissionController {
     public ResponseEntity<Permission> createPermission(@Valid @RequestBody Permission p) 
             throws IdInvalidException {
         //TODO: process POST request
-        if (this.permissionService.checkExistPermission(p) == true)
+        if (this.permissionService.checkExistPermission(p) == true) {
             throw new IdInvalidException("Permission đã tồn tại!");
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(this.permissionService.handleCreatePermission(p));
     }
     
@@ -50,8 +51,12 @@ public class PermissionController {
         if (this.permissionService.handleFetchPermissionById(p.getId()) == null)
             throw new IdInvalidException("Permission với id = " + p.getId() + " không tồn tại!");
 
-        if (this.permissionService.checkExistPermission(p) == true)
-            throw new IdInvalidException("Permission đã tồn tại!");
+        // check exist by module, apiPath and method
+        if (this.permissionService.checkExistPermission(p) || this.permissionService.isSameName(p)) {
+            throw new IdInvalidException("Permission đã tồn tại.");
+            // check name
+        }
+
 
         return ResponseEntity.ok(this.permissionService.handleUpdatePermisson(p));
     }
