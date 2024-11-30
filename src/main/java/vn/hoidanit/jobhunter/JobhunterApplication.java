@@ -2,6 +2,7 @@ package vn.hoidanit.jobhunter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 
 //disable security
@@ -11,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // })
 
 @SpringBootApplication
+@EnableAsync
 public class JobhunterApplication {
 	//
 	public static void main(String[] args) {
