@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import vn.hoidanit.jobhunter.domain.Subscriber;
 import vn.hoidanit.jobhunter.service.SubscriberService;
+import vn.hoidanit.jobhunter.util.SecurityUtil;
+import vn.hoidanit.jobhunter.util.anotation.ApiMessage;
 import vn.hoidanit.jobhunter.util.error.EmailInvalidException;
 import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 
@@ -42,11 +44,20 @@ public class SubscriberController {
     @PutMapping("/subscribers")
 
     public ResponseEntity<Subscriber> update(@RequestBody Subscriber subscriber) 
-        throws IdInvalidException{
+            throws IdInvalidException {
         //TODO: process PUT request
         if (this.subscriberService.handleGetSubscriberById(subscriber.getId()) == null)
-            throw new IdInvalidException("Subcriber với id = " + subscriber.getId() + " không tồn tại!"); 
+            throw new IdInvalidException("Subcriber với id = " + subscriber.getId() + " không tồn tại!");
         return ResponseEntity.ok(this.subscriberService.handleUpdateSubscriber(subscriber));
+    }
+    
+    @PostMapping("/subscribers/skills")
+    @ApiMessage("Get subscriber's skill")
+    public ResponseEntity<Subscriber> getSubscribersSkill() throws IdInvalidException {
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+        return ResponseEntity.ok().body(this.subscriberService.findByEmail(email));
     }
 
 }
